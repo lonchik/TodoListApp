@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import TodoItems from "./TodoItems";
 
 class TodoList extends Component {
   constructor(props) {
@@ -14,16 +15,16 @@ class TodoList extends Component {
 if (this._inputElement.value !== "") {
   let newItem = {
     text: this._inputElement.value,
-    key: Date.now()
+    key: Date.now() //this will be a unique id (not indexed?)
   };
 
   this.setState ((prevState) => {
     return {
-      items: prevState.items.concat(newItem)
+      items: prevState.items.concat(newItem) //takes items from previous state and adds newItem which will contain new value 
     };
   });
 
-this._inputElement.value = "";
+this._inputElement.value = ""; //why we need this?
 console.log(this.state.items);
 
 e.preventDefault(); //used to clear the value?s
@@ -31,7 +32,9 @@ e.preventDefault(); //used to clear the value?s
 }
   }
 
-   render() {
+   
+  //adding items
+  render() { //will render it on the page
     return (
 <div className="todoListMain">
   <div className="header">
@@ -47,12 +50,12 @@ e.preventDefault(); //used to clear the value?s
     <button type="submit">add</button>
     </form>
   </div>
+        <TodoItems entries={this.state.items}/>
 
 </div>
     );
   }
 }
-//adding items
 
 //display items
 
