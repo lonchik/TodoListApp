@@ -2,7 +2,7 @@ import React, {Component} from "react";
 
 class TodoItems extends Component {
   createTasks(item) {
-  return <li key={item.key}>{item.text}</li> //weird format?
+  return <li key={item.key}>{item.text}</li> //weird format? why is key not displayed?
   
 }
 //display items

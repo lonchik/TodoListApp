@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import TodoItems from "./TodoItems";
+import "./TodoList.css";
+
 
 class TodoList extends Component {
   constructor(props) {
@@ -11,7 +13,7 @@ class TodoList extends Component {
     this.addItem = this.addItem.bind(this);
   }
  
-  addItem(e) {
+  addItem(e) { 
 if (this._inputElement.value !== "") {
   let newItem = {
     text: this._inputElement.value,
@@ -24,10 +26,10 @@ if (this._inputElement.value !== "") {
     };
   });
 
-this._inputElement.value = ""; //why we need this?
+this._inputElement.value = ""; //this will clear the value
 console.log(this.state.items);
 
-e.preventDefault(); //used to clear the value?s
+e.preventDefault(); //what does it do?
 
 }
   }
@@ -57,7 +59,6 @@ e.preventDefault(); //used to clear the value?s
   }
 }
 
-//display items
 
 // style
 
