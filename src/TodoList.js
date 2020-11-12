@@ -20,45 +20,67 @@ class TodoList extends Component {
    let filteredItems = this.state.items.filter(function (item) {
     return (item.key !==key);
    });
-  
+
    this.setState({    
-    items: filteredItems
+    items: filteredItems,
     });
   }
 
+ 
   addItem(e) { 
-if (this._inputElement.value !== "") {
-    let newItem = {
-    text: this._inputElement.value,
-    key: Date.now() //this will be a unique id (not indexed?)
-  };
-
-
-  let matchingItems = this.state.items.filter(function(item) { 
-    return (item.text == newItem.text)
-});
-if (matchingItems.length === 0) {
-  this.setState ((prevState) => {
-  return {
-  
-  items: prevState.items.concat(newItem) //takes items from previous state and adds newItem which will contain new value 
-        };
-  });
-
-  this._inputElement.value = ""; //this will clear the value
-  console.log(this.state.items);
-
-} else{
-  this.setState({
-    error: 'This item already exists!'
-  })
-};
-    e.preventDefault(); //what does it do?
-    e.stopPropagation();
-}
-          }
-
+    if (this._inputElement.value !== "") {
+        let newItem = {
+        text: this._inputElement.value,
+        key: Date.now() //this will be a unique id (not indexed?)
+      };
+    
    
+    if (!this.checkDuplicates(newItem.text)) {
+      this.setState ((prevState) => {
+      return {
+      
+      items: prevState.items.concat(newItem) //takes items from previous state and adds newItem which will contain new value 
+            };
+      });
+    
+      this._inputElement.value = ""; //this will clear the value
+      console.log(this.state.items);
+    
+    } 
+        e.preventDefault(); //what does it do?
+        e.stopPropagation();
+    }
+  }
+
+ checkDuplicates(text) {
+  
+    let matchingItems = this.state.items.filter(function(item) { 
+      return (item.text == text)
+    });
+   
+   return matchingItems.length !== 0 
+  
+   
+ };
+
+ componentDidUpdate(prevProps, prevState) {
+  const isDuplicate = this.checkDuplicates(this._inputElement.value);
+  if (isDuplicate && !prevState.error) {
+    this.setState({
+      error: 'This item already exists!' 
+    }); 
+  }
+  if (prevState.error && !isDuplicate) {
+    this.setState ({
+      error: undefined
+    })
+  }
+  
+
+ }
+  
+//need to add a listener inside the render function
+
   //adding items
   render() { //will render it on the page
     return (
