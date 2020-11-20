@@ -17,84 +17,90 @@ class TodoList extends Component {
 
  
  deleteItem(key){
-   let filteredItems = this.state.items.filter(function (item) {
-    return (item.key !==key);
+   let filteredItems = this.state.items.filter(function (item) { 
+    return (item.key !==key); //retrun all items in the array that do not equal to the key
    });
 
    this.setState({    
-    items: filteredItems,
+    items: filteredItems, //items are now all the filtered items without the one being filtered out
     });
   }
 
  
   addItem(e) { 
-    if (this._inputElement.value !== "") {
-        let newItem = {
+    if (this._inputElement.value !== "") { //if value is not empty 
+        let newItem = {  
         text: this._inputElement.value,
         key: Date.now() //this will be a unique id (not indexed?)
-      };
+      }; //create a new object with text, key
     
    
-    if (!this.checkDuplicates(newItem.text)) {
-      this.setState ((prevState) => {
-      return {
-      
-      items: prevState.items.concat(newItem) //takes items from previous state and adds newItem which will contain new value 
-            };
-      });
     
       this._inputElement.value = ""; //this will clear the value
-      console.log(this.state.items);
+      this.setState ((prevState) => {
+        return {
+            items: prevState.items.concat(newItem), //takes items from previous state and adds newItem which will contain new value 
+            inputText: ""
+          };
+      });
     
-    } 
-        e.preventDefault(); //what does it do?
-        e.stopPropagation();
+      console.log(this.state.items);
+        
+      e.preventDefault(); //what does it do?
+      e.stopPropagation();
     }
   }
 
- checkDuplicates(text) {
+ checkDuplicates(text) { 
   
     let matchingItems = this.state.items.filter(function(item) { 
-      return (item.text == text)
+      return (item.text == text) //if true
     });
    
-   return matchingItems.length !== 0 
-  
-   
+   return matchingItems.length !== 0  //checkDuplicates return true if we get any number of matches >0
+    //do we need this second check?
  };
 
  componentDidUpdate(prevProps, prevState) {
-  const isDuplicate = this.checkDuplicates(this._inputElement.value);
-  if (isDuplicate && !prevState.error) {
+  const isDuplicate = this.checkDuplicates(this.state.inputText);
+  if (isDuplicate && !prevState.error) {  //if we get a duplicate and previous state does not contain an error
     this.setState({
       error: 'This item already exists!' 
     }); 
   }
   if (prevState.error && !isDuplicate) {
     this.setState ({
-      error: undefined
+      error: undefined //does undefined clear erorr state????
     })
   }
   
 
  }
-  
 //need to add a listener inside the render function
 
   //adding items
+  handleChange = (e) => {  //key listener
+    this.setState({
+      inputText: e.target.value //target is the event is bound to 
+    
+    })
+  }
+
   render() { //will render it on the page
     return (
 <div className="todoListMain">
   <div className="header">
+  <form onSubmit={this.addItem}>
     {this.state.error && (<div className="validation">{this.state.error}</div>)}
-    <form onSubmit={this.addItem}>
     
-    <input ref={(a) => this._inputElement = a}
+    <input 
+      ref={(element) => this._inputElement = element}
+      onChange={this.handleChange}
       placeholder="enter task">
     </input>
 
 
-    <button type="submit">add</button>
+    <button type="submit" disabled={!!this.state.error}>add</button>
     </form>
   </div>
         <TodoItems entries={this.state.items}
