@@ -15,7 +15,11 @@ class TodoList extends Component {
 
   }
 
- 
+  updateLocalStorage() {
+		if (typeof(Storage) !== "undefined")
+			localStorage.addItem = JSON.stringify(this.state.items);
+  }
+  
  deleteItem(key){
    let filteredItems = this.state.items.filter(function (item) { 
     return (item.key !==key); //retrun all items in the array that do not equal to the key
