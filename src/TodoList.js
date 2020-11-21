@@ -46,8 +46,10 @@ class TodoList extends Component {
             items: prevState.items.concat(newItem), //takes items from previous state and adds newItem which will contain new value 
             inputText: ""
           };
-      });
-    
+      }, () => {
+        this.updateLocalStorage();
+       }) 
+       console.log('local storage' + JSON.stringify(localStorage));
       console.log(this.state.items);
         
       e.preventDefault(); //what does it do?

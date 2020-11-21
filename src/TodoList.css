@@ -1,3 +1,5 @@
+
+
 .todoListMain .header input {
   padding: 10px;
   font-size: 16px;
@@ -52,7 +54,8 @@ cursor: pointer;
 .validation
 {
   color: red;
-  padding: 15px;
+  padding: 0px;
+
 
 }
 .todoListMain .theList li {
