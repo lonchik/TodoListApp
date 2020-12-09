@@ -6,8 +6,15 @@ import "./TodoList.css";
 class TodoList extends Component {
   constructor(props) {
     super(props);
+    let savedItems = []  
+    try {
+      console.log(localStorage.items)
+      savedItems = JSON.parse(localStorage.items)
+    } catch(e) {
+      console.error('Error retirving localStorage', e)
+    }
     this.state = {
-      items: []
+      items: savedItems
     };
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
@@ -16,8 +23,9 @@ class TodoList extends Component {
   }
 
   updateLocalStorage() {
-		if (typeof(Storage) !== "undefined")
-			localStorage.addItem = JSON.stringify(this.state.items);
+		if (typeof(Storage) !== "undefined") {
+  		localStorage.items = JSON.stringify(this.state.items);
+    }
   }
   
  deleteItem(key){
@@ -46,11 +54,9 @@ class TodoList extends Component {
             items: prevState.items.concat(newItem), //takes items from previous state and adds newItem which will contain new value 
             inputText: ""
           };
-      }, () => {
-        this.updateLocalStorage();
-       }) 
-       console.log('local storage' + JSON.stringify(localStorage));
-      console.log(this.state.items);
+      })
+        console.log('local storage' + JSON.stringify(localStorage));
+        console.log(this.state.items);
         
       e.preventDefault(); //what does it do?
       e.stopPropagation();
@@ -79,7 +85,9 @@ class TodoList extends Component {
       error: undefined //does undefined clear erorr state????
     })
   }
-  
+  if (this.state.items.length !== prevState.items.length) {
+    this.updateLocalStorage();
+  }
 
  }
 //need to add a listener inside the render function
